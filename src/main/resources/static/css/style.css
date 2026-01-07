@@ -4,9 +4,48 @@
   box-sizing: border-box;
 }
 
+html, body{
+    height:100%;
+}
 body {
   border: 1px solid red;
+  display: flex;
+  flex-direction : column;
 }
+
 header {
     border: 1px solid blue;
+    top: 0px;
 }
+
+footer {
+    border: 1px solid black;
+    margin-top:auto;
+}
+
+.site-main {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.plant-wrapper {
+  width : 70vw;
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding-bottom: 10px;
+}
+
+
+.plant-card {
+  min-width: 300px;
+  min-height: 350px;
+  border: 1px solid blue;
+  padding: 10px;
+  text-align: center;
+
+  flex-shrink : 0;
+}
+

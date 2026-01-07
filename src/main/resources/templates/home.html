@@ -1,24 +1,43 @@
-<!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HOME</title>
-  <link rel="stylesheet" th:href="@{/css/style.css}">
-</head>
-<body>
-  <div class="container">
-    <header class="site-header">
-      <h1 class="site-title">홈페이지 헤더</h1>
-    </header>
+  <!DOCTYPE html>
+  <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOME</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+  </head>
+  <body>
+      <header class="site-header">
+        <h1 class="site-title">홈페이지 헤더</h1>
+      </header>
 
-    <main class="site-main">
-      <p>메인 내용</p>
-    </main>
+      <main class="site-main">
 
-    <footer class="site-footer">
-      <p>홈페이지 푸터</p>
-    </footer>
-  </div>
-</body>
-</html>
+        <!-- 로그인 전 -->
+        <div th:if="${null == remoteUser}">
+          <div class="plant-card">
+            <img src="/images/plant-template.png" alt="식물 템플릿" />
+            <p>로그인 후 나만의 식물이 자랍니다!</p>
+          </div>
+        </div>
+
+        <!-- 로그인 후 -->
+        <div class="plant-wrapper" th:if="${null != remoteUser}">
+          <div class="plant-card" th:each="plant : ${plantList}">
+            <img th:src="@{/images/{img}(img=${plant.image})}" th:alt="${plant.name}" />
+            <p>커밋 수: <span th:text="${plant.commitCount}">0</span></p>
+            <p>성장 단계: <span th:text="${plant.growthStage}">새싹</span></p>
+          </div>
+        </div>
+
+
+
+      </main>
+
+
+
+      <footer class="site-footer">
+        <p>홈페이지 푸터</p>
+      </footer>
+  </body>
+  </html>
