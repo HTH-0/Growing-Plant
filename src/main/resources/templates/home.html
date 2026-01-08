@@ -30,9 +30,11 @@
 
           <!-- Plant 카드 반복 -->
           <div class="plant-card" th:each="plant : ${plantList}">
+            <a th:href="@{/plant/{name}(name=${plant.name})}">
             <img th:src="@{/images/{img}(img=${plant.image})}" th:alt="${plant.name}" />
             <p>커밋 수: <span th:text="${plant.commitCount}">0</span></p>
             <p>성장 단계: <span th:text="${plant.growthStage}">새싹</span></p>
+            </a>
           </div>
         </div>
 

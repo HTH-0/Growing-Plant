@@ -5,6 +5,7 @@ import com.example.hth.store.PlantStore;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -32,5 +33,18 @@ public class HomeController {
     public String grow(){
         plantStore.growAll();
         return "redirect:/";
+    }
+
+    @GetMapping("/plant/{name}")
+    public String PlantDetail(@PathVariable String name, Model model){
+
+        // plantStore 에서 이름으로 해당 plant 검색
+        Plant plant = plantStore.getAll().stream()
+                .filter(p -> p.getName().equals(name))
+                .findFirst()
+                .orElse(null);
+
+        model.addAttribute("plant", plant);
+        return "plant-detail";
     }
 }
