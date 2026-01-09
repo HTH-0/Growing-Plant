@@ -1,50 +1,59 @@
-package com.example.hth.controller;
+    package com.example.hth.controller;
 
-import com.example.hth.domain.Plant;
-import com.example.hth.store.PlantStore;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+    import com.example.hth.domain.UserPlant;
+    import com.example.hth.dto.MyPlantView;
+    import com.example.hth.service.PlantService;
+    import lombok.RequiredArgsConstructor;
+    import org.springframework.stereotype.Controller;
+    import org.springframework.ui.Model;
+    import org.springframework.web.bind.annotation.GetMapping;
+    import org.springframework.web.bind.annotation.PathVariable;
+    import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.List;
+    import java.util.List;
 
-@Controller
-public class HomeController {
+    @Controller
+    @RequiredArgsConstructor
+    public class HomeController {
 
-    private final PlantStore plantStore = PlantStore.getInstance();
+        private final PlantService plantService;
 
-    @GetMapping("/")
-    public String home(Model model){
+        @GetMapping("/")
+        public String home(Model model){
 
 
-        // 로그인 테스트용 변수
-        String remoteUser = "testUser"; // null이면 로그인 전 화면
-        model.addAttribute("remoteUser", remoteUser);
+            // 로그인 테스트용 변수
+            String remoteUser = "testUser"; // null이면 로그인 전 화면
+            model.addAttribute("remoteUser", remoteUser);
 
-        // 더미 plantList
-        List<Plant> plantList = plantStore.getAll();
-        model.addAttribute("plantList", plantList);
+            // 더미 plantList
+            List<MyPlantView> myPlants = plantService.getMyPlantsView(remoteUser);
+            model.addAttribute("myPlants", myPlants);
 
-        return "home";
+            return "home";
+        }
+
+        // 성장 업데이트 요청(커밋 기반): 커밋 수 반영 -> UserPlant 상태 갱신
+        @PostMapping("/my-plant/grow")
+        public String growMyPlants(){
+            String remoteUser = "testUser";
+            plantService.growMyPlants(remoteUser);
+            return "redirect:/";
+        }
+
+        // 단건조회 -> 식물 상세페이지 이동하기
+        @GetMapping("/my-plant/{id}")
+        public String plantDetail(@PathVariable Long id, Model model){
+
+            // UserPlant를 id로 조회
+            MyPlantView plant = plantService.getMyPlantView(id);
+
+            // null 예외처리
+            if (plant == null){
+
+                return "redirect:/";
+            }
+            model.addAttribute("plant", plant);
+            return "plant-detail";
+        }
     }
-
-    @GetMapping("/grow")
-    public String grow(){
-        plantStore.growAll();
-        return "redirect:/";
-    }
-
-    @GetMapping("/plant/{name}")
-    public String PlantDetail(@PathVariable String name, Model model){
-
-        // plantStore 에서 이름으로 해당 plant 검색
-        Plant plant = plantStore.getAll().stream()
-                .filter(p -> p.getName().equals(name))
-                .findFirst()
-                .orElse(null);
-
-        model.addAttribute("plant", plant);
-        return "plant-detail";
-    }
-}
