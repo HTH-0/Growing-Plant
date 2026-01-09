@@ -16,9 +16,22 @@ out/
 # ========================
 target/
 build/
+.gradle/
 
 # ========================
 # Logs / temporary
 # ========================
 *.class
 *.log
+
+# ========================
+# Env / Secret
+# ========================
+.env
+application-local.yml
+application-secret.yml
+
+# ========================
+# Windows (optional)
+# ========================
+Thumbs.db

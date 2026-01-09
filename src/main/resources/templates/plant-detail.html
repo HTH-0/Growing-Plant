@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>식물 상세 페이지</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="site-header">
+  <h1 class="site-title">식물 상세 정보</h1>
+  <a th:href="@{/}">홈으로 돌아가기</a>
+</header>
+
+<main class="site-main">
+
+  <!-- plant가 있을 때 -->
+  <div class="plant-detail" th:if="${plant != null}">
+    <img th:src="@{/images/{img}(img=${plant.img})}" th:alt="${plant.name}" />
+    <h2 th:text="${plant.name}">식물 이름</h2>
+    <p>커밋 수: <span th:text="${plant.commitCount}">0</span></p>
+    <p>성장 단계: <span th:text="${plant.growthStage}">새싹</span></p>
+  </div>
+
+  <!-- plant가 없을 때 -->
+  <div th:if="${plant == null}">
+    <p>해당 식물을 찾을 수 없습니다.</p>
+    <a th:href="@{/}">홈으로 돌아가기</a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <p>홈페이지 푸터</p>
+</footer>
+</body>
+</html>
